@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: # {insert kind here}
+kind: Deployment
 metadata:
   labels:
     run: djangoserver
@@ -20,10 +20,33 @@ spec:
         run: djangoserver
     spec:
       containers:
-      - image: # {insert image here}
+      - image: djangoserver:1
         imagePullPolicy: Always
         name: djangoserver
         ports:
-        - containerPort: # {insert port here}
+        - containerPort: 8000
           protocol: TCP
+        env:
+        - name: DJANGO_DEBUG
+          value: "0"
+        - name: DJANGO_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: django-config
+              key: secret-key
+        - name: DJANGO_ALLOWED_HOSTS
+          valueFrom:
+            configMapKeyRef:
+              name: django-config
+              key: allowed-hosts
+        - name: SONGS_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: django-config
+              key: songs-url
+        - name: PICTURES_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: django-config
+              key: pictures-url
       restartPolicy: Always
