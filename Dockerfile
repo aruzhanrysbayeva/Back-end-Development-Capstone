@@ -4,7 +4,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
-RUN useradd --uid 1001 appuser && chown -R appuser /app
+RUN useradd --uid 1001 appuser && chown -R appuser /app && chgrp -R 0 /app && chmod -R g=u /app
 USER appuser
 EXPOSE 8000
 ENTRYPOINT ["/bin/sh", "/app/entrypoint.sh"]
