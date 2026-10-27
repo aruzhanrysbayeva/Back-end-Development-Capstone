@@ -88,6 +88,7 @@
 
     <main id="main">
       <div class="container mt-3">
+        {% if service_error %}<p role="alert">{{ service_error }}</p>{% endif %}
         <section>{% block content %} {% endblock %}</section>
       </div>
     </main>
