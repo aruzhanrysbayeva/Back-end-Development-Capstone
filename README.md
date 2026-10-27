@@ -36,4 +36,4 @@ Migrations succeeded, Django check found no issues, and 4 application tests pass
 
 ## Submission status
 
-Prepared and tested locally. Not yet published to the learner GitHub account or deployed to IBM Cloud. Local screenshots and execution reports must not be described as cloud deployment evidence.
+Prepared and tested locally. Published to https://github.com/aruzhanrysbayeva/Back-end-Development-Capstone. IBM Cloud deployment is pending. Local screenshots and execution reports document local execution.
