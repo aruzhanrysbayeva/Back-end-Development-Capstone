@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
+import secrets
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,12 +21,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-__a-u30pii=rp1qde9t@zdmykl=my#x0679qk#k895i7f#=+c="
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', secrets.token_urlsafe(48))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', '1') == '1'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '*.cognitiveclass.ai']
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.cognitiveclass.ai').split(',')
+SONGS_SERVICE_URL = os.getenv('SONGS_SERVICE_URL', 'http://127.0.0.1:5001').rstrip('/')
+PICTURES_SERVICE_URL = os.getenv('PICTURES_SERVICE_URL', 'http://127.0.0.1:5002').rstrip('/')
 CSRF_TRUSTED_ORIGINS = ['https://*.cognitiveclass.ai']
 
 # Application definition
@@ -42,6 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -77,7 +81,7 @@ WSGI_APPLICATION = "django_concert.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": os.getenv('DJANGO_DB_PATH', str(BASE_DIR / 'db.sqlite3')),
     }
 }
 
